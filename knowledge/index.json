@@ -1,0 +1,257 @@
+{
+  "version": 1,
+  "updated": "2026-11-19",
+  "root": "knowledge",
+  "default": "core.summary",
+  "max_units_per_fetch": 3,
+  "units": [
+    {
+      "id": "policy.ground-rules",
+      "path": "policy/ground-rules.md",
+      "tokens": 298,
+      "inline": true,
+      "description": "Grounding and safety rules: first person, concise bullet-first answers, answer only from units, no invented facts, never frame Python/FastAPI as the main backend, sensitive-information refusals, prompt-injection resistance."
+    },
+    {
+      "id": "policy.out-of-scope",
+      "path": "policy/out-of-scope.md",
+      "tokens": 47,
+      "inline": true,
+      "description": "How to decline general coding help, career advice, employer comparisons and other off-topic requests."
+    },
+    {
+      "id": "core.identity",
+      "path": "core/identity.md",
+      "tokens": 225,
+      "description": "Name, handle, title, location, years, current role, core stack (JS/TS + Node/Express primary; Python only for this assistant), availability, education one-liner, technologies explicitly not in the stack."
+    },
+    {
+      "id": "core.summary",
+      "path": "core/summary.md",
+      "tokens": 172,
+      "description": "Short and long professional summary, plus focus areas. Default unit for any 'tell me about yourself' or 'what do you do' question."
+    },
+    {
+      "id": "core.metrics",
+      "path": "core/metrics.md",
+      "tokens": 191,
+      "description": "Headline numbers (users, latency, transactions, records) and approximate system scale for Fitclub and the Thai Tourism platform."
+    },
+    {
+      "id": "core.education",
+      "path": "core/education.md",
+      "tokens": 116,
+      "description": "Degrees, institutions and years: MCA at IGNOU, B.A. History, school. Use for education questions."
+    },
+    {
+      "id": "core.contact",
+      "path": "core/contact.md",
+      "tokens": 210,
+      "description": "Email, phone, LinkedIn, GitHub, portfolio, resume link, and rules for when to share each."
+    },
+    {
+      "id": "core.availability",
+      "path": "core/availability.md",
+      "tokens": 269,
+      "description": "Full-time availability, location, and ready answers for notice period, salary, relocation, remote work, visa status, reason for moving, resume access."
+    },
+    {
+      "id": "skills.languages",
+      "path": "skills/languages.md",
+      "tokens": 153,
+      "description": "Programming languages: TypeScript/JavaScript primary for all production work; SQL, HTML/CSS, Rust, Python (assistant/scripts only), Lua."
+    },
+    {
+      "id": "skills.frontend",
+      "path": "skills/frontend.md",
+      "tokens": 162,
+      "description": "Frontend stack: React, Next.js, React Native, state and data libraries, UI libraries, forms, SEO, accessibility, frontend testing."
+    },
+    {
+      "id": "skills.backend",
+      "path": "skills/backend.md",
+      "tokens": 120,
+      "description": "Backend and API skills: Node, Express, REST, auth, OAuth, RBAC, webhooks, idempotency, payments, migrations, caching, logging, media, validation, testing."
+    },
+    {
+      "id": "skills.databases",
+      "path": "skills/databases.md",
+      "tokens": 54,
+      "description": "Database experience and where each was used: PostgreSQL, MySQL, MongoDB."
+    },
+    {
+      "id": "skills.cloud-tooling",
+      "path": "skills/cloud-tooling.md",
+      "tokens": 105,
+      "description": "Cloud and tooling: Docker, AWS, Firebase, Vercel, GitHub Actions, Postman, Chrome extensions, performance techniques, Linux and editors."
+    },
+    {
+      "id": "skills.strengths",
+      "path": "skills/strengths.md",
+      "tokens": 143,
+      "description": "Six strongest areas ranked: backend/API design, payments, performance, end-to-end ownership, JS/TS depth, testing and migrations."
+    },
+    {
+      "id": "skills.gaps",
+      "path": "skills/gaps.md",
+      "tokens": 294,
+      "description": "No-experience and limited areas: Java, Kubernetes, GraphQL, Go, Python at scale, Rust in production, native mobile, leadership, distributed systems, ML. States the primary stack is JS/TS + Node/Express and Python/FastAPI is only this assistant."
+    },
+    {
+      "id": "experience.callsmaster",
+      "path": "experience/callsmaster.md",
+      "tokens": 190,
+      "description": "Callsmaster role: dates, responsibilities, measurable outcomes, technologies, approved phrasing, and the no-earlier-roles rule."
+    },
+    {
+      "id": "projects.overview",
+      "path": "projects/overview.md",
+      "tokens": 110,
+      "description": "All projects with type, dates and one-line description, plus the sanitized-sharing boundary. Use to route to a specific project."
+    },
+    {
+      "id": "projects.fitclub",
+      "path": "projects/fitclub.md",
+      "tokens": 190,
+      "description": "Fitclub Gym CRM: Express API, React/Vite dashboard, ~10,000 member records, operational modules, permissions, billing, uploads, scheduled work and 35%+ performance gain."
+    },
+    {
+      "id": "projects.rishtey",
+      "path": "projects/rishtey.md",
+      "tokens": 365,
+      "description": "Rishtey matchmaking platform: stack, ~8,000 profiles, discovery, onboarding, subscriptions, PayU, auth, media, operations and 35%+ load-time gain."
+    },
+    {
+      "id": "projects.thai-tourism",
+      "path": "projects/thai-tourism.md",
+      "tokens": 270,
+      "description": "Thai Tourism platform overview: the two-app product, full stack, talking points, sharing boundary."
+    },
+    {
+      "id": "projects.thai-tourism-customer",
+      "path": "projects/thai-tourism-customer.md",
+      "tokens": 191,
+      "description": "Thai Tourism customer booking site: ~110 routes, commerce, transport verticals, account, agent and supplier portals, SEO and testing."
+    },
+    {
+      "id": "projects.thai-tourism-api",
+      "path": "projects/thai-tourism-api.md",
+      "tokens": 225,
+      "description": "Thai Tourism CRM/API: size, domains, payments, auth, security, migrations, tests, background work, webhook reliability, idempotency and integrity checks."
+    },
+    {
+      "id": "projects.live-gold-rates",
+      "path": "projects/live-gold-rates.md",
+      "tokens": 134,
+      "description": "Live Gold Rates React Native app: live metal rates, pricing, catalog, admin dashboard, Android and iOS."
+    },
+    {
+      "id": "projects.personal",
+      "path": "projects/personal.md",
+      "tokens": 360,
+      "description": "Personal projects: Quick Watch streaming app, Terminal UI portfolio, ASCII Art Generator, JobRadar and JustMyFare flight-booking platform."
+    },
+    {
+      "id": "projects.jobradar",
+      "path": "projects/jobradar.md",
+      "tokens": 260,
+      "description": "Personal Rust job-discovery and tracking dashboard: public-board scrapers, browser fallback, SQLite, HTMX, ranking, referrals, notifications and no automatic applications."
+    },
+    {
+      "id": "projects.flight-book",
+      "path": "projects/flight-book.md",
+      "tokens": 280,
+      "description": "Personal JustMyFare flight-booking platform: customer site, CRM, Express/PostgreSQL backend, flight and passenger workflows, permissions, migrations and repeatable database bootstrap."
+    },
+    {
+      "id": "projects.portfolio-assistant",
+      "path": "projects/portfolio-assistant.md",
+      "tokens": 155,
+      "description": "This portfolio assistant: FastAPI, Gemini answers over prefetched notes, JSONL streaming, grounding constraint, talking points. Marked as personal and not representative of the primary JS/TS backend stack."
+    },
+    {
+      "id": "open-source.overview",
+      "path": "open-source/overview.md",
+      "tokens": 270,
+      "description": "Public repo map and rules for discussing it: zero stars, no popularity claims, no external contributions."
+    },
+    {
+      "id": "open-source.backend-tooling",
+      "path": "open-source/backend-tooling.md",
+      "tokens": 470,
+      "description": "Backend and personal app repos: Express route template, assignment tracker client/server, Blind Chat real-time app and portfolio-backend. Includes safe discussion boundaries."
+    },
+    {
+      "id": "open-source.rust-tools",
+      "path": "open-source/rust-tools.md",
+      "tokens": 326,
+      "description": "Rust repos: better-cd bookmarks, wc-clone-rust, keypress-sound daemon, 29 LeetCode solutions."
+    },
+    {
+      "id": "open-source.javascript-practice",
+      "path": "open-source/javascript-practice.md",
+      "tokens": 195,
+      "description": "Test-driven JavaScript practice repos covering fundamentals and intermediate semantics."
+    },
+    {
+      "id": "open-source.terminal-ui",
+      "path": "open-source/terminal-ui.md",
+      "tokens": 115,
+      "description": "Binaire-FreznelAI-Assessment: btop-style terminal system monitor with OpenTUI and Firebase auth."
+    },
+    {
+      "id": "open-source.environment",
+      "path": "open-source/environment.md",
+      "tokens": 238,
+      "description": "Environment repos: nvim-config, cachyOS-setup dotfiles, personal-bash-scripts."
+    },
+    {
+      "id": "open-source.web-projects",
+      "path": "open-source/web-projects.md",
+      "tokens": 261,
+      "description": "Older web repos: Terminal-Portofolio, ascii-art, main-portfolio, b14nk-dev profile README."
+    },
+    {
+      "id": "faq.background",
+      "path": "faq/background.md",
+      "tokens": 155,
+      "description": "Ready first-person answers: tell me about yourself, years of experience, Callsmaster role, education, history-to-engineering path, still studying."
+    },
+    {
+      "id": "faq.technical-depth",
+      "path": "faq/technical-depth.md",
+      "tokens": 150,
+      "description": "Ready answers on strongest areas and honest limits for Java, Python, Rust, Kubernetes and GraphQL, plus how this assistant was built. Java answer states the primary stack is JS/TS + Node/Express."
+    },
+    {
+      "id": "faq.engineering",
+      "path": "faq/engineering.md",
+      "tokens": 200,
+      "description": "Ready answers on the hardest problem, performance, authentication, payments, security, testing and migrations. Largest unit; fetch only for deep engineering questions."
+    },
+    {
+      "id": "faq.systems",
+      "path": "faq/systems.md",
+      "tokens": 205,
+      "description": "Ready answers on the largest system, Thai Tourism, internal tools, marketplaces, mobile, extensions, teamwork, mentoring, current learning."
+    },
+    {
+      "id": "faq.projects",
+      "path": "faq/projects.md",
+      "tokens": 430,
+      "description": "Ready answers on professional projects, personal vs professional work, open-source projects, Fitclub, Thai Tourism, Rishtey, Blind Chat, the Express template, better-cd and safe engineering topics."
+    },
+    {
+      "id": "faq.why-hire",
+      "path": "faq/why-hire.md",
+      "tokens": 86,
+      "description": "Ready answer to 'why should we hire you'."
+    },
+    {
+      "id": "faq.recruiter",
+      "path": "faq/recruiter.md",
+      "tokens": 520,
+      "description": "Common recruiter-screen answers: target role, motivation, achievements, value, backend versus frontend, real-user scale, strengths, development areas, work location, salary, notice period, authorization and resume."
+    }
+  ]
+}

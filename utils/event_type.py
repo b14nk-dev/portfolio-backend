@@ -1,5 +1,5 @@
 import json
 
 
-def event_type(event_type: str, **data) -> str:
-    return json.dumps({"type": event_type, **data}, ensure_ascii=False) + "\n"
+def write_event(name: str, **data) -> str:
+    return json.dumps({"type": name, **data}, ensure_ascii=False) + "\n"

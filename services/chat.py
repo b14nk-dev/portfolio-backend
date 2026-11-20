@@ -1,97 +1,44 @@
-import json
+import logging
 from collections.abc import Iterator
 
-from groq.types.chat.chat_completion_assistant_message_param import (
-    ChatCompletionAssistantMessageParam,
+from llm.LLM import RateLimited, create_llm
+from services.answer_round import answer_round
+from services.events import (
+    GENERIC_FAILED,
+    INIT_FAILED,
+    USAGE_LIMITED,
+    failure_events,
 )
-from groq.types.chat.chat_completion_message_tool_call_param import (
-    ChatCompletionMessageToolCallParam,
-)
+from services.prompting import reference_prompt
+from services.special_friends import special_reply
+from utils.event_type import write_event
 
-from llm import tools_dict
-from llm.LLM import LLM
-from utils.event_type import event_type
+logger = logging.getLogger(__name__)
 
 
 def start_new_chat(question: str) -> Iterator[str]:
+    yield write_event("status", stage="thinking")
 
-    llm = LLM()
-    llm.create_message({"role": "user", "content": question})
+    fixed_reply = special_reply(question)
+    if fixed_reply:
+        yield write_event("token", text=fixed_reply)
+        yield write_event("done")
+        return
 
-    yield event_type("status", stage="thinking")
-    announced: set[str] = set()
-    for _ in range(6):
-        content: list[str] = []
-        calls: dict[int, ChatCompletionMessageToolCallParam] = {}
-        finish = None
-        try:
-            for chunk in llm.get_response():
-                if not chunk.choices:
-                    continue
-                choice = chunk.choices[0]
-                delta = choice.delta
+    try:
+        llm = create_llm()
+    except Exception:
+        logger.exception("could not initialise the LLM")
+        yield from failure_events(None, INIT_FAILED)
+        return
 
-                if delta.content:
-                    content.append(delta.content)
-                    yield event_type("token", text=delta.content)
+    llm.add_message("user", reference_prompt(question))
 
-                for tc in delta.tool_calls or []:
-                    slot = calls.setdefault(
-                        tc.index,
-                        {
-                            "id": "",
-                            "type": "function",
-                            "function": {"name": "", "arguments": ""},
-                        },
-                    )
-                    if tc.id:
-                        slot["id"] = tc.id
-                    if tc.function:
-                        if tc.function.name:
-                            slot["function"]["name"] = tc.function.name
-                        if tc.function.arguments:
-                            slot["function"]["arguments"] += tc.function.arguments
-
-                    if (
-                        tc.function
-                        and tc.function.name
-                        and tc.function.name not in announced
-                    ):
-                        announced.add(tc.function.name)
-                        yield event_type("status", stage="tool", name=tc.function.name)
-
-                if choice.finish_reason:
-                    finish = choice.finish_reason
-
-            if finish != "tool_calls" or not calls:
-                yield event_type("done")
-                return
-
-            assistant: ChatCompletionAssistantMessageParam = {
-                "role": "assistant",
-                "tool_calls": [calls[i] for i in sorted(calls)],
-            }
-            if content:
-                assistant["content"] = "".join(content)
-            llm.create_message(assistant)
-
-            for call in assistant["tool_calls"]:
-                try:
-                    fn = tools_dict[call["function"]["name"]]
-                    args = json.loads(call["function"]["arguments"] or "{}")
-                    result = str(fn(**args))
-                except Exception as exc:
-                    result = f"Tool error: {exc}"
-
-                llm.create_message(
-                    {"role": "tool", "tool_call_id": call["id"], "content": result}
-                )
-
-        except Exception:
-            yield event_type(
-                "error", message="Something went wrong — please email Ritik directly."
-            )
-            yield event_type("done")
-            return
-    yield event_type("error", message="Sorry, I couldn't finish that answer.")
-    yield event_type("done")
+    try:
+        yield from answer_round(llm)
+    except RateLimited:
+        yield from failure_events(llm, USAGE_LIMITED)
+        return
+    except Exception:
+        logger.exception("chat request failed")
+        yield from failure_events(llm, GENERIC_FAILED)

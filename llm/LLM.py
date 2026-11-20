@@ -1,56 +1,50 @@
+import logging
 import os
+from collections.abc import Iterator
 
-import httpx
 from dotenv import load_dotenv
-from groq import Groq, Stream
-from groq.types.chat import ChatCompletionMessageParam
-from groq.types.chat.chat_completion_chunk import ChatCompletionChunk
 
+from llm.gemini_client import MAX_OUTPUT_TOKENS, build_request
+from llm.gemini_models import ModelPool
+from llm.rate_limit import RateLimit, RateLimited
+from llm.streaming import stream_with_fallback
 from llm.system_prompts import system_prompt
-
-from .tools import TOOLS_SCHEMA
 
 load_dotenv()
 
-api_key = os.getenv("GROQ_API_KEY")
-model = os.getenv("GROQ_MODEL")
+logger = logging.getLogger(__name__)
 
+api_key = os.getenv("GEMINI_API_KEY")
 
 if not api_key:
-    raise ValueError("No api key found")
+    raise ValueError("No Gemini api key found")
 
 
-class init_llm:
-    client: Groq
-    model: str
-    messages: list[ChatCompletionMessageParam]
+class LLMClient:
+    def __init__(self, models: list[str] | None = None) -> None:
+        self.messages: list[dict[str, str]] = []
+        self.pool = ModelPool(models or ())
+        self.model = self.pool.ensure()
+        self.rate_limit: RateLimit | None = None
+        self.add_message("system", system_prompt)
 
-    def __init__(self, model: str) -> None:
-        self.client = Groq(
-            api_key=api_key, timeout=httpx.Timeout(30.0, connect=5.0), max_retries=2
-        )
-        self.model = model
-        self.messages = []
-        self.create_message({"role": "system", "content": system_prompt})
+    def add_message(self, role: str, content: str) -> None:
+        self.messages.append({"role": role, "content": content})
 
-    def create_message(self, param: ChatCompletionMessageParam) -> init_llm:
-        self.messages.append(param)
-        return self
+    def request(self):
+        return build_request(self.messages, max_tokens=MAX_OUTPUT_TOKENS)
 
-    def get_response(self) -> Stream[ChatCompletionChunk]:
-        return self.client.chat.completions.create(
-            model=self.model,
-            messages=self.messages,
-            stream=True,
-            temperature=0,
-            tools=TOOLS_SCHEMA,
-            tool_choice="auto",
-            max_tokens=500,
-        )
+    def get_response(self) -> Iterator[str]:
+        return stream_with_fallback(self)
 
 
-def LLM() -> init_llm:
+def create_llm() -> LLMClient:
+    preferred = [
+        name.strip()
+        for name in os.getenv("GEMINI_MODELS", "").split(",")
+        if name.strip()
+    ]
+    return LLMClient(models=preferred or None)
 
-    if not model:
-        raise ValueError("No model name found")
-    return init_llm(model=model)
+
+__all__ = ["LLMClient", "RateLimited", "create_llm"]

@@ -1,16 +1,22 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi.errors import RateLimitExceeded
 
-from routes import routes
+from routes.ai import router as ai_router
+from utils.client_rate_limit import limiter, rate_limit_exceeded_handler
 
 app = FastAPI()
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, rate_limit_exceeded_handler)
 
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://your-portfolio.com", "http://localhost:5173"],
+    allow_origins=["https://ritik-negi.vercel.app"],
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1)(:\d+)?",
     allow_methods=["POST", "GET"],
     allow_headers=["Content-Type"],
+    expose_headers=["Retry-After"],
 )
 
 
@@ -19,5 +25,4 @@ def health():
     return {"status": "ok"}
 
 
-for route in routes:
-    app.include_router(router=route.router, prefix=f"/api/v1/{route.name}")
+app.include_router(ai_router, prefix="/api/v1/ai")

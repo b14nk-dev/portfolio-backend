@@ -1,6 +1,3 @@
-from llm.LLM import LLM
-from llm.tools import get_info
+from llm.LLM import LLMClient, create_llm
 
-tools_dict = {"get_info": get_info}
-
-__all__ = ["LLM", "tools_dict"]
+__all__ = ["LLMClient", "create_llm"]
